@@ -12,4 +12,8 @@ class ProductRepositoryImpl(
     override fun findAll(): List<Product> {
         return jpaProductRepository.findAll().map { it.toDomain() }
     }
+
+    override fun findById(id: String): Product? {
+        return jpaProductRepository.findById(id).orElse(null)?.toDomain()
+    }
 }

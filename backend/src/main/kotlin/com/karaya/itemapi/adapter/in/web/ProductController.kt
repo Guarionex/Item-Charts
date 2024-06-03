@@ -4,6 +4,7 @@ import com.karaya.itemapi.application.port.`in`.ProductService
 import com.karaya.itemapi.domain.model.Product
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -16,5 +17,15 @@ class ProductController(private val productService: ProductService) {
         val products = productService.getAllProducts()
 
         return ResponseEntity.ok(products)
+    }
+
+    @GetMapping("/{id}")
+    fun getProductById(@PathVariable id: String): ResponseEntity<Product> {
+        val product = productService.getProductById(id)
+        return if (product != null) {
+            ResponseEntity.ok(product)
+        } else {
+            ResponseEntity.notFound().build()
+        }
     }
 }

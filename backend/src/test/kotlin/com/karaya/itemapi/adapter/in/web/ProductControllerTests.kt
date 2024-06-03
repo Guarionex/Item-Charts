@@ -43,5 +43,33 @@ class ProductControllerTests @Autowired constructor(
 
         val product: Product = response.body!![0]
         assertThat(product.id).isEqualTo("B007TIE0GQ")
+        assertThat(product.tags).isEqualTo(listOf("Pantry", "Obsolete", "Blender", "Lightning Deal"))
+        assertThat(product.details[0]).isEqualTo("Effortlessly pulverizes fruits, vegetables, superfoods and protein shakes")
+        assertThat(product.reviews[0].customer).isEqualTo("ILoveToReview")
+        assertThat(product.sales[0].unitsSold).isEqualTo(887)
+    }
+
+    @Test
+    fun `should return a product by ID`() {
+        val productId = "B007TIE0GQ"
+        val response: ResponseEntity<Product> = restTemplate.getForEntity(
+            "${getRootUrl()}/api/products/$productId",
+            Product::class.java
+        )
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
+        val product: Product = response.body!!
+        assertThat(product.id).isEqualTo(productId)
+    }
+
+    @Test
+    fun `should return 404 when product not found`() {
+        val productId = "nonexistent"
+        val response: ResponseEntity<Product> = restTemplate.getForEntity(
+            "${getRootUrl()}/api/products/$productId",
+            Product::class.java
+        )
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.NOT_FOUND)
     }
 }

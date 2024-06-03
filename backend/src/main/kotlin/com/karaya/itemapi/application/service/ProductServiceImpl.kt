@@ -10,4 +10,8 @@ class ProductServiceImpl(private val productRepository: ProductRepository) : Pro
     override fun getAllProducts(): List<Product> {
         return productRepository.findAll()
     }
+
+    override fun getProductById(id: String): Product? {
+        return productRepository.findById(id)
+    }
 }
