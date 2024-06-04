@@ -30,7 +30,11 @@ module.exports = {
         },
         hot: true,
         open: true,
-        port: 8080,
+        port: 3000,
+        proxy: [{
+            context: ['/api'],
+            target: 'http://localhost:8080',
+        }],
     },
     plugins: [
         new HtmlWebpackPlugin({
