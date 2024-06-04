@@ -25,7 +25,12 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
     },
     devServer: {
-        contentBase: './dist',
+        static: {
+            directory: path.join(__dirname, 'dist'),
+        },
+        hot: true,
+        open: true,
+        port: 8080,
     },
     plugins: [
         new HtmlWebpackPlugin({

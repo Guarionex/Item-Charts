@@ -1,0 +1,76 @@
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.app {
+    display: flex;
+    flex-direction: row;
+}
+
+.sidebar {
+    width: 30%;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.main-content {
+    width: 70%;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.product-details {
+    text-align: center;
+}
+
+.product-details img {
+    max-width: 100%;
+}
+
+.tags {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.tag {
+    display: inline-block;
+    background-color: #e0e0e0;
+    border-radius: 20px;
+    padding: 5px 15px;
+    margin: 5px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.sales-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.sales-table th,
+.sales-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: right;
+}
+
+.sales-table th {
+    background-color: #f2f2f2;
+    cursor: pointer;
+}
+
+.sales-table th:first-child,
+.sales-table td:first-child {
+    text-align: left;
+}
+
+.sales-table th:hover {
+    background-color: #e0e0e0;
+}
