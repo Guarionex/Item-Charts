@@ -1,9 +1,12 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
+const isDevelopment = process.env.NODE_ENV !== 'production'
 
 module.exports = {
     entry: './src/index.tsx',
-    mode: 'development',
+    mode: isDevelopment ? 'development' : 'production',
     module: {
         rules: [
             {
@@ -14,6 +17,15 @@ module.exports = {
             {
                 test: /\.css$/i,
                 use: ['style-loader', 'css-loader'],
+            },
+            {
+                test: /\.(png|jpe?g|gif)$/i,
+                use: ['file-loader'],
+            },
+            {
+                test: /\.svg$/,
+                use: ['@svgr/webpack', 'file-loader'],
+
             },
         ],
     },
@@ -37,6 +49,7 @@ module.exports = {
         }],
     },
     plugins: [
+        new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             template: './src/index.html',
         }),

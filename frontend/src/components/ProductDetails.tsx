@@ -4,13 +4,11 @@ import './ProductDetails.css'
 import React from 'react'
 
 export const ProductDetails: React.FC = () => {
-    const products = useSelector((state: RootState) => state.products.items)
+    const product = useSelector((state: RootState) => state.product.item)
 
-    if (!products.length) {
+    if (!product) {
         return <div>Loading...</div>
     }
-
-    const product = products[0]
 
     return (
         <div className="product-details">

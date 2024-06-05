@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-export const fetchProducts = createAsyncThunk<Product[]>('products/fetchProducts', async () => {
-    const response = await axios.get('/api/products')
+export const fetchProductById = createAsyncThunk<Product, string>('product/fetchProductById', async (id) => {
+    const response = await axios.get(`/api/products/${id}`)
     return response.data
 })
 
@@ -22,31 +22,31 @@ interface Product {
 }
 
 interface ProductsState {
-    items: Product[]
+    item?: Product
     status: 'idle' | 'loading' | 'succeeded' | 'failed'
     error: string | null
 }
 
 const initialState: ProductsState = {
-    items: [],
+    item: undefined,
     status: 'idle',
     error: null,
 }
 
 const productSlice = createSlice({
-    name: 'products',
+    name: 'product',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(fetchProducts.pending, (state) => {
+            .addCase(fetchProductById.pending, (state) => {
                 state.status = 'loading'
             })
-            .addCase(fetchProducts.fulfilled, (state, action) => {
+            .addCase(fetchProductById.fulfilled, (state, action) => {
                 state.status = 'succeeded'
-                state.items = action.payload
+                state.item = action.payload
             })
-            .addCase(fetchProducts.rejected, (state, action) => {
+            .addCase(fetchProductById.rejected, (state, action) => {
                 state.status = 'failed'
                 state.error = action.error.message || 'Failed to fetch products'
             })

@@ -4,7 +4,7 @@ import {thunk} from "redux-thunk"
 
 export const store = configureStore({
     reducer: {
-        products: productReducer,
+        product: productReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk)
 })

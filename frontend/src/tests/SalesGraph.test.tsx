@@ -1,11 +1,11 @@
 import {render, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
-import {App} from '../App'
-import React from 'react'
-import productReducer from "../redux/productSlice"
+import {SalesGraph} from '../components/SalesGraph'
+import React from "react"
+import MockAdapter from "axios-mock-adapter"
 import axios from "axios"
-import MockAdapter from 'axios-mock-adapter'
 import {configureStore} from "@reduxjs/toolkit"
+import productReducer, {fetchProductById} from "../redux/productSlice"
 
 const mock = new MockAdapter(axios)
 mock.onGet('/api/products/B007TIE0GQ').reply(200, {
@@ -32,25 +32,24 @@ mock.onGet('/api/products/B007TIE0GQ').reply(200, {
     ]
 })
 
-describe('App', () => {
-    it('renders app with all components', async () => {
+describe('Sales Graph', () => {
+    it('renders sales graph correctly', async () => {
         const store = configureStore({
             reducer: {
                 product: productReducer
             }
-        });
+        })
 
         render(
             <Provider store={store}>
-                <App/>
+                <SalesGraph/>
             </Provider>
         )
 
-        expect(screen.getAllByText('Loading...')).toHaveLength(3)
+        store.dispatch(fetchProductById('B007TIE0GQ'))
 
-        expect(await screen.findByRole('heading', {name: 'Shark Ninja'})).toBeInTheDocument()
-        expect(screen.getByRole('heading', {name: 'Retail Sales'})).toBeInTheDocument()
-        expect(screen.getByText('Week Ending')).toBeInTheDocument()
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
 
+        expect(await screen.findByText('Retail Sales')).toBeInTheDocument()
     })
 })

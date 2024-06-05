@@ -2,6 +2,9 @@
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    flex: 1;
+    overflow-y: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .sales-table th,
@@ -23,4 +26,31 @@
 
 .sales-table th:hover {
     background-color: #e0e0e0;
+}
+
+th {
+    cursor: pointer;
+}
+
+th span {
+    display: inline-block;
+    margin-left: 5px;
+}
+
+th span::after {
+    content: '';
+    display: inline-block;
+    margin-left: 5px;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+}
+
+th span.ascending::after {
+    border-bottom: 5px solid #000;
+}
+
+th span.descending::after {
+    border-top: 5px solid #000;
 }
