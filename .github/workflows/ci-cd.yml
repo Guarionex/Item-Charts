@@ -30,7 +30,7 @@ jobs:
       - name: Run tests
         run: npm test --prefix frontend
 
-  dockerize-and-deploy-backend:
+  dockerize-backend:
     needs: build
     runs-on: ubuntu-latest
 
@@ -50,14 +50,15 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/item-api:$IMAGE_TAG -f backend/Dockerfile .
           docker push ${{ secrets.DOCKER_USERNAME }}/item-api:$IMAGE_TAG
 
-      - name: Call reusable workflow to deploy backend
-        uses: Guarionex/aws-deploy-workflow/.github/workflows/deploy.yml@main
-        with:
-          IMAGE_TAG: backend-${{ github.sha }}
-          REPOSITORY_NAME: item-api
-          K8S_MANIFESTS_PATHS: k8s/backend-deployment.yaml,k8s/backend-service.yaml,k8s/namespace.yaml,k8s/postgresql.yaml
+  deploy-backend:
+    needs: dockerize-backend
+    uses: Guarionex/aws-deploy-workflow/.github/workflows/deploy.yml@main
+    with:
+      IMAGE_TAG: backend-${{ github.sha }}
+      REPOSITORY_NAME: item-api
+      K8S_MANIFESTS_PATHS: k8s/backend-deployment.yaml,k8s/backend-service.yaml,k8s/namespace.yaml,k8s/postgresql.yaml
 
-  dockerize-and-deploy-frontend:
+  dockerize-frontend:
     needs: build
     runs-on: ubuntu-latest
 
@@ -77,9 +78,9 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/item-frontend:$IMAGE_TAG -f frontend/Dockerfile .
           docker push ${{ secrets.DOCKER_USERNAME }}/item-frontend:$IMAGE_TAG
 
-      - name: Call reusable workflow to deploy frontend
-        uses: Guarionex/aws-deploy-workflow/.github/workflows/deploy.yml@main
-        with:
-          IMAGE_TAG: frontend-${{ github.sha }}
-          REPOSITORY_NAME: item-frontend
-          K8S_MANIFESTS_PATHS: k8s/frontend-deployment.yaml,k8s/frontend-service.yaml,k8s/namespace.yaml,k8s/postgresql.yaml
+  deploy-frontend:
+    uses: Guarionex/aws-deploy-workflow/.github/workflows/deploy.yml@main
+    with:
+      IMAGE_TAG: frontend-${{ github.sha }}
+      REPOSITORY_NAME: item-frontend
+      K8S_MANIFESTS_PATHS: k8s/frontend-deployment.yaml,k8s/frontend-service.yaml,k8s/namespace.yaml,k8s/postgresql.yaml
