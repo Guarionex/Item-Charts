@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  build-frontend:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,16 +26,26 @@ jobs:
         run: npm run build
         working-directory: ./frontend
 
-      - name: Build backend
-        run: ./gradlew clean build --build-cache --parallel --configure-on-demand --no-daemon
-        working-directory: ./backend
-
       - name: Run tests
         run: npm test
         working-directory: ./frontend
 
+  build-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set execute permission for gradlew
+        run: chmod +x ./backend/gradlew
+
+      - name: Build backend
+        run: ./gradlew clean build --build-cache --parallel --configure-on-demand --no-daemon
+        working-directory: ./backend
+
   dockerize-backend:
-    needs: build
+    needs: build-backend
     runs-on: ubuntu-latest
 
     steps:
@@ -64,7 +74,7 @@ jobs:
     secrets: 'inherit'
 
   dockerize-frontend:
-    needs: build
+    needs: build-frontend
     runs-on: ubuntu-latest
 
     steps:
