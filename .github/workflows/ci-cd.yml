@@ -1,0 +1,85 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build frontend
+        run: npm run build --prefix frontend
+
+      - name: Build backend
+        run: ./gradlew clean build --build-cache --parallel --configure-on-demand --no-daemon
+
+      - name: Run tests
+        run: npm test --prefix frontend
+
+  dockerize-and-deploy-backend:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build and push Docker image for backend
+        run: |
+          IMAGE_TAG=backend-${{ github.sha }}
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/item-api:$IMAGE_TAG -f backend/Dockerfile .
+          docker push ${{ secrets.DOCKER_USERNAME }}/item-api:$IMAGE_TAG
+
+      - name: Call reusable workflow to deploy backend
+        uses: Guarionex/aws-deploy-workflow/.github/workflows/deploy.yml@main
+        with:
+          IMAGE_TAG: backend-${{ github.sha }}
+          REPOSITORY_NAME: item-api
+          K8S_MANIFESTS_PATHS: k8s/backend-deployment.yaml,k8s/backend-service.yaml,k8s/namespace.yaml,k8s/postgresql.yaml
+
+  dockerize-and-deploy-frontend:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build and push Docker image for frontend
+        run: |
+          IMAGE_TAG=frontend-${{ github.sha }}
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/item-frontend:$IMAGE_TAG -f frontend/Dockerfile .
+          docker push ${{ secrets.DOCKER_USERNAME }}/item-frontend:$IMAGE_TAG
+
+      - name: Call reusable workflow to deploy frontend
+        uses: Guarionex/aws-deploy-workflow/.github/workflows/deploy.yml@main
+        with:
+          IMAGE_TAG: frontend-${{ github.sha }}
+          REPOSITORY_NAME: item-frontend
+          K8S_MANIFESTS_PATHS: k8s/frontend-deployment.yaml,k8s/frontend-service.yaml,k8s/namespace.yaml,k8s/postgresql.yaml

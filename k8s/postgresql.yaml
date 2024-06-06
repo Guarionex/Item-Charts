@@ -1,0 +1,89 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-postgresql
+  namespace: item-charts
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-postgresql
+  namespace: item-charts
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: item-charts-config
+  namespace: item-charts
+data:
+  DATABASE_URL: "postgresql://postgres:password@item-charts-database:5432/itemapi"
+
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: item-charts-database
+  namespace: item-charts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: item-charts-database
+  template:
+    metadata:
+      labels:
+        app: item-charts-database
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:latest
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: "itemapi"
+            - name: POSTGRES_USER
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "password"
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-storage
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: pvc-postgresql
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: item-charts-database
+  namespace: item-charts
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: item-charts-database
