@@ -4,14 +4,14 @@ LABEL authors="Karaya"
 WORKDIR /react-app
 
 # Copy package.json and package-lock.json
-COPY package.json ./react-app
-COPY package-lock.json ./react-app
+COPY package.json /react-app
+COPY package-lock.json /react-app
 
 # Install dependencies
 RUN npm install
 
 # Copy the rest of the application files
-COPY . ./react-app
+COPY . /react-app
 
 # Build the application
 RUN npm run build
