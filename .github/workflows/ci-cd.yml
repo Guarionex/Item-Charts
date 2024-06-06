@@ -79,6 +79,7 @@ jobs:
       K8S_MANIFESTS_PATHS: k8s/backend-deployment.yaml,k8s/backend-service.yaml,k8s/namespace.yaml,k8s/postgresql.yaml
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      REUSABLE_WORKFLOW_PAT: ${{ secrets.REUSABLE_WORKFLOW_PAT }}
 
   dockerize-frontend:
     needs: build-frontend
@@ -109,3 +110,4 @@ jobs:
       K8S_MANIFESTS_PATHS: k8s/frontend-deployment.yaml,k8s/frontend-service.yaml,k8s/namespace.yaml,k8s/postgresql.yaml
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      REUSABLE_WORKFLOW_PAT: ${{ secrets.REUSABLE_WORKFLOW_PAT }}
