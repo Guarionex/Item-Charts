@@ -41,7 +41,9 @@ jobs:
         run: chmod +x ./backend/gradlew
 
       - name: Build backend
-        run: ./gradlew clean build --build-cache --parallel --configure-on-demand --no-daemon
+        run: |
+          cd backend
+          ./gradlew clean build --build-cache --parallel --configure-on-demand --no-daemon
         working-directory: ./backend
 
   dockerize-backend:
