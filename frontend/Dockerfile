@@ -1,19 +1,27 @@
-FROM node:20 as build
+# Stage 1: Build the React app
+FROM node:20 AS build
 LABEL authors="Karaya"
 WORKDIR /app
+
+# Copy package.json and package-lock.json
 COPY package.json ./
-COPY /package-lock.json ./
+COPY package-lock.json ./
+
+# Install dependencies
 RUN npm install
-COPY . ./app
+
+# Copy the rest of the application files
+COPY . ./
+
+# Build the application
 RUN npm run build
 
-RUN echo "Contents of /app after build:" && ls -la /
-RUN #echo "Contents of /app/build after build:" && ls -la /app/build
-
+# Stage 2: Serve the app with Nginx
 FROM nginx:alpine
 LABEL authors="Karaya"
-RUN echo "Contents of / before copying:" && ls -la /
-RUN echo "Contents of /app before copying:" && ls -la /app
+
+# Copy the build output to Nginx
 COPY --from=build /app/build /usr/share/nginx/html
+
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
