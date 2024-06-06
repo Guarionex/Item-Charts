@@ -41,7 +41,7 @@ jobs:
         run: chmod +x ./backend/gradlew
 
       - name: Build backend
-        run: ./gradlew clean build --build-cache --parallel --configure-on-demand --no-daemon
+        run: ./gradlew clean build
         working-directory: ./backend
 
   dockerize-backend:
@@ -91,9 +91,8 @@ jobs:
       - name: Build and push Docker image for frontend
         run: |
           IMAGE_TAG=frontend-${{ github.sha }}
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/item-frontend:$IMAGE_TAG .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/item-frontend:$IMAGE_TAG -f frontend/Dockerfile .
           docker push ${{ secrets.DOCKER_USERNAME }}/item-frontend:$IMAGE_TAG
-        working-directory: ./frontend
 
   deploy-frontend:
     needs: dockerize-frontend

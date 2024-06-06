@@ -2,10 +2,10 @@
 FROM node:20 as build
 LABEL authors="Karaya"
 WORKDIR /app
-COPY package.json ./
-COPY package-lock.json ./
+COPY frontend/package.json ./
+COPY frontend/package-lock.json ./
 RUN npm install
-COPY . ./
+COPY frontend/ ./
 RUN npm run build
 
 # Stage 2: Serve the React application with Nginx
