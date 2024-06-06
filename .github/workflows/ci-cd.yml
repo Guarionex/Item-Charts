@@ -95,6 +95,7 @@ jobs:
           IMAGE_TAG=frontend-${{ github.sha }}
           docker build -t ${{ secrets.DOCKER_USERNAME }}/item-frontend:$IMAGE_TAG -f frontend/Dockerfile .
           docker push ${{ secrets.DOCKER_USERNAME }}/item-frontend:$IMAGE_TAG
+        working-directory: ./frontend
 
   deploy-frontend:
     needs: dockerize-frontend
