@@ -1,11 +1,16 @@
-FROM amazoncorretto:17-alpine
 LABEL authors="Karaya"
+FROM amazoncorretto:17-alpine AS build
 WORKDIR /app
-COPY build.gradle settings.gradle ./
-COPY gradlew ./
 COPY gradle gradle
-RUN ./gradlew build -x test --parallel --configure-on-demand --no-daemon
-COPY . .
-RUN ./gradlew clean build --parallel --configure-on-demand --no-daemon
+COPY gradlew .
+COPY build.gradle.kts settings.gradle.kts .
+RUN chmod +x ./gradlew
+RUN ./gradlew dependencies
+COPY src src
+RUN ./gradlew build -x test
+
+FROM amazoncorretto:17-alpine
+WORKDIR /app
+COPY --from=build /app/build/libs/your-app-name.jar ./app.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "build/libs/your-app-name.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
