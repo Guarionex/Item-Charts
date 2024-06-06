@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: item-frontend:latest
+          image: ${DOCKER_USERNAME}/item-frontend:${IMAGE_TAG}
           ports:
             - containerPort: 3000
