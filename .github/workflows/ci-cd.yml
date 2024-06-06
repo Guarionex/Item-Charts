@@ -42,7 +42,7 @@ jobs:
 
       - name: Build backend
         run: |
-          cd backend
+          cd ./backend
           ./gradlew clean build --build-cache --parallel --configure-on-demand --no-daemon
         working-directory: ./backend
 
