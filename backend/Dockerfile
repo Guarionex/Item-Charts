@@ -1,5 +1,5 @@
-LABEL authors="Karaya"
 FROM amazoncorretto:17-alpine AS build
+LABEL authors="Karaya"
 WORKDIR /app
 COPY gradle gradle
 COPY gradlew .
