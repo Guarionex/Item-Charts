@@ -1,4 +1,4 @@
-FROM amazoncorretto:17-alpine AS build
+FROM openjdk:17-jre-slim
 LABEL authors="Karaya"
 VOLUME /tmp
 ARG JAR_FILE=build/libs/*.jar
