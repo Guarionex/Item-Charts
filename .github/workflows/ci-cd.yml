@@ -57,6 +57,8 @@ jobs:
       IMAGE_TAG: backend-${{ github.sha }}
       REPOSITORY_NAME: item-api
       K8S_MANIFESTS_PATHS: k8s/backend-deployment.yaml,k8s/backend-service.yaml,k8s/namespace.yaml,k8s/postgresql.yaml
+    secrets:
+      REUSABLE_WORKFLOW_PAT: ${{ secrets.REUSABLE_WORKFLOW_PAT }}
 
   dockerize-frontend:
     needs: build
@@ -84,3 +86,5 @@ jobs:
       IMAGE_TAG: frontend-${{ github.sha }}
       REPOSITORY_NAME: item-frontend
       K8S_MANIFESTS_PATHS: k8s/frontend-deployment.yaml,k8s/frontend-service.yaml,k8s/namespace.yaml,k8s/postgresql.yaml
+    secrets:
+      REUSABLE_WORKFLOW_PAT: ${{ secrets.REUSABLE_WORKFLOW_PAT }}
