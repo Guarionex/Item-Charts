@@ -40,9 +40,6 @@ jobs:
       - name: Set execute permission for gradlew
         run: chmod +x ./backend/gradlew
 
-      - name: Ensure Gradle wrapper files are present
-        run: ls -la backend/gradle/wrapper
-
       - name: Build backend
         run: ./gradlew clean build --build-cache --parallel --configure-on-demand --no-daemon
         working-directory: ./backend
@@ -93,7 +90,7 @@ jobs:
       - name: Build and push Docker image for frontend
         run: |
           IMAGE_TAG=frontend-${{ github.sha }}
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/item-frontend:$IMAGE_TAG -f frontend/Dockerfile .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/item-frontend:$IMAGE_TAG -f Dockerfile .
           docker push ${{ secrets.DOCKER_USERNAME }}/item-frontend:$IMAGE_TAG
         working-directory: ./frontend
 
