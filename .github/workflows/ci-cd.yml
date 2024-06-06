@@ -44,7 +44,6 @@ jobs:
         run: |
           cd ./backend
           ./gradlew clean build --build-cache --parallel --configure-on-demand --no-daemon
-        working-directory: ./backend
 
   dockerize-backend:
     needs: build-backend
