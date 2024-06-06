@@ -52,7 +52,7 @@ jobs:
 
   deploy-backend:
     needs: dockerize-backend
-    uses: guarionex/aws-deploy-workflow/.github/workflows/deploy.yml@main
+    uses: Guarionex/aws-deploy-workflow/.github/workflows/deploy.yml@main
     with:
       IMAGE_TAG: backend-${{ github.sha }}
       REPOSITORY_NAME: item-api
@@ -79,7 +79,7 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/item-frontend:$IMAGE_TAG
 
   deploy-frontend:
-    uses: guarionex/aws-deploy-workflow/.github/workflows/deploy.yml@main
+    uses: Guarionex/aws-deploy-workflow/.github/workflows/deploy.yml@main
     with:
       IMAGE_TAG: frontend-${{ github.sha }}
       REPOSITORY_NAME: item-frontend
