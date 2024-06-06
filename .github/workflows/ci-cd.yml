@@ -69,7 +69,6 @@ jobs:
           IMAGE_TAG=backend-${{ github.sha }}
           docker build -t ${{ secrets.DOCKER_USERNAME }}/item-api:$IMAGE_TAG ./backend
           docker push ${{ secrets.DOCKER_USERNAME }}/item-api:$IMAGE_TAG
-        working-directory: ./backend
 
   deploy-backend:
     needs: dockerize-backend
