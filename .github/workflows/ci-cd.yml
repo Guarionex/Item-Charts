@@ -41,7 +41,7 @@ jobs:
         run: chmod +x ./backend/gradlew
 
       - name: Ensure Gradle wrapper files are present
-        run: ls -la backend
+        run: ls -la backend/gradle/wrapper
 
       - name: Build backend
         run: ./gradlew clean build --build-cache --parallel --configure-on-demand --no-daemon
@@ -81,9 +81,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
