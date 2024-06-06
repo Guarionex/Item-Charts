@@ -1,8 +1,16 @@
-# Stage 1: Build the application
-FROM amazoncorretto:17-alpine AS build
-LABEL authors="Karaya"
-VOLUME /tmp
+# Use an official Gradle image to create a build artifact.
+FROM gradle:7.4.1-jdk17 AS build
+WORKDIR /home/gradle/project
+COPY --chown=gradle:gradle . /home/gradle/project
+RUN gradle build --no-daemon
+
+# Use Amazon Corretto 17 as the base image
+FROM amazoncorretto:17
+# Set the working directory
+WORKDIR /app
+# Copy the jar file from the build stage
+COPY --from=build /home/gradle/project/build/libs/*.jar app.jar
+# Expose the port the app runs on
 EXPOSE 8080
-ARG JAR_FILE=target/itemapi.jar
-ADD ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+# Run the jar file
+ENTRYPOINT ["java","-jar","app.jar"]
