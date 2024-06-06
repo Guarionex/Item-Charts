@@ -37,7 +37,7 @@ jobs:
       - name: Build and push Docker image for backend
         run: |
           IMAGE_TAG=backend-${{ github.sha }}
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/item-api:$IMAGE_TAG .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/item-api:$IMAGE_TAG ./backend
           docker push ${{ secrets.DOCKER_USERNAME }}/item-api:$IMAGE_TAG
 
       - name: Install dependencies
@@ -53,7 +53,7 @@ jobs:
       - name: Build and push Docker image for frontend
         run: |
           IMAGE_TAG=frontend-${{ github.sha }}
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/item-frontend:$IMAGE_TAG .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/item-frontend:$IMAGE_TAG ./frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/item-frontend:$IMAGE_TAG
 
   deploy-backend:
