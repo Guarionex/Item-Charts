@@ -40,10 +40,12 @@ jobs:
       - name: Set execute permission for gradlew
         run: chmod +x ./backend/gradlew
 
+      - name: Ensure Gradle wrapper files are present
+        run: ls -la backend
+
       - name: Build backend
-        run: |
-          cd ./backend
-          ./gradlew clean build --build-cache --parallel --configure-on-demand --no-daemon
+        run: ./gradlew clean build --build-cache --parallel --configure-on-demand --no-daemon
+        working-directory: ./backend
 
   dockerize-backend:
     needs: build-backend
