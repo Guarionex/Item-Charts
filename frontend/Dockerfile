@@ -15,6 +15,10 @@ COPY . ./
 # Exposing the port
 EXPOSE 3000
 
+# Set environment variables
+ENV HOST=0.0.0.0
+ENV WDS_SOCKET_PORT=0
+
 # Starting our application
 CMD ["npm", "start"]
 
