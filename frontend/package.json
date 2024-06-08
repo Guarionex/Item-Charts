@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack serve --mode development --open",
-    "build": "webpack --mode production",
+    "build": "webpack --mode production --output-path build",
     "test": "jest"
   },
   "keywords": [],
