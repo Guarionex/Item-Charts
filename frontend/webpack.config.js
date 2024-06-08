@@ -1,6 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -44,7 +44,7 @@ module.exports = {
         open: true,
         host: '0.0.0.0',
         port: 3000,
-        public: 'a7f06cbfd91954b0cbee1be17310c5c6-552271409.us-west-2.elb.amazonaws.com:80',
+        allowedHosts: ['a7f06cbfd91954b0cbee1be17310c5c6-552271409.us-west-2.elb.amazonaws.com:80'],
         proxy: [{
             context: ['/api'],
             target: 'http://localhost:8080',
