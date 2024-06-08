@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: item-charts-config
-  namespace: item-charts
-data:
-  DATABASE_URL: "postgresql://postgres:password@item-charts-database:5432/itemapi"

@@ -31,7 +31,9 @@ metadata:
   name: item-charts-config
   namespace: item-charts
 data:
-  DATABASE_URL: "postgresql://postgres:password@item-charts-database:5432/itemapi"
+  DATABASE_URL: "jdbc:postgresql://item-charts-database:5432/itemapi"
+  POSTGRES_USER: "postgres"
+  POSTGRES_PASSWORD: "password"
 
 
 ---
@@ -63,6 +65,8 @@ spec:
               value: "postgres"
             - name: POSTGRES_PASSWORD
               value: "password"
+            - name: PGDATA
+              value: "/var/lib/postgresql/data/pgdata"
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgres-storage
@@ -81,5 +85,6 @@ metadata:
 spec:
   ports:
     - port: 5432
+      targetPort: 5432
   selector:
     app: item-charts-database
