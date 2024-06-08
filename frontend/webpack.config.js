@@ -42,9 +42,7 @@ module.exports = {
         },
         hot: true,
         open: true,
-        host: '0.0.0.0',
         port: 3000,
-        allowedHosts: ['a7f06cbfd91954b0cbee1be17310c5c6-552271409.us-west-2.elb.amazonaws.com:80'],
         proxy: [{
             context: ['/api'],
             target: 'http://localhost:8080',
