@@ -15,9 +15,6 @@ COPY . ./
 # Exposing the port
 EXPOSE 3000
 
-# Set environment variables
-ENV HOST=a7f06cbfd91954b0cbee1be17310c5c6-552271409.us-west-2.elb.amazonaws.com
-
 # Starting our application
 CMD ["npm", "start"]
 
