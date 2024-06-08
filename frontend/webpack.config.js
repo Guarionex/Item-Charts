@@ -42,6 +42,7 @@ module.exports = {
         },
         hot: true,
         open: true,
+        host: process.env.HOST || '0.0.0.0',
         port: 3000,
         proxy: [{
             context: ['/api'],

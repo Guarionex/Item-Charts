@@ -16,8 +16,7 @@ COPY . ./
 EXPOSE 3000
 
 # Set environment variables
-ENV HOST=0.0.0.0
-ENV WDS_SOCKET_PORT=0
+ENV HOST=a7f06cbfd91954b0cbee1be17310c5c6-552271409.us-west-2.elb.amazonaws.com
 
 # Starting our application
 CMD ["npm", "start"]
