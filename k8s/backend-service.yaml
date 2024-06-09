@@ -4,9 +4,9 @@ metadata:
   name: item-charts-backend
   namespace: item-charts
 spec:
+  type: LoadBalancer
   ports:
     - port: 8080
       targetPort: 8080
   selector:
     app: item-charts-backend
-  type: ClusterIP
